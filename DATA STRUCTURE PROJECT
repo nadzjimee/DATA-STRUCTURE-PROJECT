@@ -1,6 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;  
+import java.awt.event.*;
 import java.io.*;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -104,8 +104,7 @@ public class OrderInformation {
 
 
 
-
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class CustomerInformation {
@@ -120,7 +119,7 @@ public class CustomerInformation {
         this.custName = custName;
         this.tableNumber = tableNumber;
         this.totalPayment = totalPayment;
-        this.orders = new ArrayList<>();
+        this.orders = new LinkedList<>();
     }
 
     public String getCustId() {
@@ -161,8 +160,6 @@ public class CustomerInformation {
         return sb.toString();
     }
 }
-
-
 
 
 
@@ -223,7 +220,6 @@ public class Queue {
 
 
 
-
 import javax.swing.*;
 import javax.swing.*;
 import java.awt.*;
@@ -241,7 +237,7 @@ public class WelcomePage {
 
     private void initialize() {
         frame = new JFrame("Restaurant Manager");
-        frame.setSize(800, 700);
+        frame.setSize(900, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         panel = new JPanel();
@@ -270,9 +266,9 @@ public class WelcomePage {
         });
         panel.add(startButton);
 
-        ImageIcon icon = new ImageIcon("C:\\Users\\user\\OneDrive\\SWC LAB SESSION\\JAVA practices\\Jihah\\gambar SWC PROJECTTT.jpg");
+        ImageIcon icon = new ImageIcon("C:\\Users\\Windows 11\\Downloads\\Hardware.txt\\SWC3344\\SWC3344 lab 1&2-copy-copy\\image Restaurant.jpg");
         JLabel imageLabel = new JLabel(icon);
-        imageLabel.setBounds(200, 100, icon.getIconWidth(), icon.getIconHeight());
+        imageLabel.setBounds(40, 10, icon.getIconWidth(), icon.getIconHeight());
         panel.add(imageLabel);
 
         frame.add(panel);
@@ -291,19 +287,17 @@ public class WelcomePage {
 
 
 
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Queue;
-import java.util.Stack;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.LinkedList;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Queue;
 
 public class RestaurantManager {
     private JFrame frame;
@@ -321,7 +315,7 @@ public class RestaurantManager {
     }
 
     private void initialize() {
-        frame = new JFrame("Order and Counter System");
+        frame = new JFrame("Ticket and Counter System");
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -329,7 +323,7 @@ public class RestaurantManager {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon background = new ImageIcon("background.jpg");
+                ImageIcon background = new ImageIcon("background.jpg"); // Adjust with your background image
                 g.drawImage(background.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
@@ -355,23 +349,9 @@ public class RestaurantManager {
         addCustomerButton.setBackground(new Color(152, 251, 152));
         nextQueueButton.setBackground(new Color(255, 255, 224));
 
-        showDataButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    showData();
-                }
-            });
-
-        addCustomerButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    addNewCustomers();
-                }
-            });
-
-        nextQueueButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    nextQueue();
-                }
-            });
+        showDataButton.addActionListener(e -> showData());
+        addCustomerButton.addActionListener(e -> addNewCustomers());
+        nextQueueButton.addActionListener(e -> nextQueue());
 
         buttonsPanel.add(showDataButton);
         buttonsPanel.add(addCustomerButton);
@@ -407,11 +387,7 @@ public class RestaurantManager {
         recordButton = new JButton("Record");
         recordButton.setPreferredSize(new Dimension(600, 40));
         recordButton.setBackground(new Color(255, 239, 213));
-        recordButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    showRecord();
-                }
-            });
+        recordButton.addActionListener(e -> showRecord());
         bottomPanel.add(recordButton);
 
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
@@ -434,7 +410,10 @@ public class RestaurantManager {
                 CustomerInformation customer = queue.poll();
                 tempQueue.add(customer);
                 textArea.append(customer.toString() + "\n");
-                textArea.append("჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻჻\n");
+                for (OrderInformation order : customer.getOrders()) {
+                    textArea.append(order.toString() + "\n");
+                }
+                textArea.append("──────────────────────────────────────────────────────────────────────────────────────────────\n");
             }
             queue.addAll(tempQueue);
             textArea.append("\n");
@@ -524,20 +503,12 @@ public class RestaurantManager {
 
         JButton paymentButton = new JButton("Payment");
         paymentButton.setBackground(new Color(173, 216, 230));
-        paymentButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    handlePayment(queue, counterName);
-                }
-            });
+        paymentButton.addActionListener(e -> handlePayment(queue, counterName));
         buttonPanel.add(paymentButton);
 
         JButton receiptButton = new JButton("Receipt");
         receiptButton.setBackground(new Color(255, 222, 173));
-        receiptButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    showReceipt(queue, counterName);
-                }
-            });
+        receiptButton.addActionListener(e -> showReceipt(queue, counterName));
         buttonPanel.add(receiptButton);
 
         panel.add(buttonPanel, BorderLayout.SOUTH);
@@ -574,35 +545,35 @@ public class RestaurantManager {
     }
 
     private void showRecord() {
-    JTextArea textArea = new JTextArea(100, 50);
-    textArea.setEditable(false);
-    textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
-    textArea.append("ALL CUSTOMER DATA:\n\n");
-    textArea.append("◦◦,°.✽✦✽.◦.✽✦✽.°,◦◦◦◦,°.✽✦✽.◦.✽✦✽.°,◦◦\n");
+        JTextArea textArea = new JTextArea(90, 50);
+        textArea.setEditable(false);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        textArea.append("ALL CUSTOMER DATA:\n\n");
+        textArea.append("◦◦,°.✽✦✽.◦.✽✦✽.°,◦◦◦◦,°.✽✦✽.◦.✽✦✽.°,◦◦\n");
 
-    Queue<CustomerInformation>[] queues = new Queue[]{queueCounter1, queueCounter2, queueCounter3};
-    for (int i = 0; i < queues.length; i++) {
-        Queue<CustomerInformation> queue = queues[i];
-        textArea.append("Counter " + (i + 1) + ":\n");
-        Queue<CustomerInformation> tempQueue = new LinkedList<>();
-        while (!queue.isEmpty()) {
-            CustomerInformation customer = queue.poll();
-            tempQueue.add(customer);
-            textArea.append(customer.toString() + "\n");
-            textArea.append("◦◦,°.✽✦✽.◦.✽✦✽.°,◦◦◦◦,°.✽✦✽.◦.✽✦✽.°,◦◦\n");
+        Queue<CustomerInformation>[] queues = new Queue[]{queueCounter1, queueCounter2, queueCounter3};
+        for (int i = 0; i < queues.length; i++) {
+            Queue<CustomerInformation> queue = queues[i];
+            textArea.append("Counter " + (i + 1) + ":\n");
+            Queue<CustomerInformation> tempQueue = new LinkedList<>();
+            while (!queue.isEmpty()) {
+                CustomerInformation customer = queue.poll();
+                tempQueue.add(customer);
+                textArea.append(customer.toString() + "\n");
+                textArea.append("◦◦,°.✽✦✽.◦.✽✦✽.°,◦◦◦◦,°.✽✦✽.◦.✽✦✽.°,◦◦\n");
+            }
+            queue.addAll(tempQueue);
+            textArea.append("\n");
         }
-        queue.addAll(tempQueue);
-        textArea.append("\n");
-    }
 
-    textArea.append("Completed Customers:\n");
-    for (CustomerInformation customer : completeStack) {
-        textArea.append(customer.toString() + "\n");
-        textArea.append("────── ･ ｡ﾟ☆: .?🍔🍫☕🥩🍰🍜🧋🍨 .:☆ﾟ. ──────\n");
-    }
+        textArea.append("Completed Customers:\n");
+        for (CustomerInformation customer : completeStack) {
+            textArea.append(customer.toString() + "\n");
+            textArea.append("────── ･ ｡ﾟ☆: .?🍔🍫☕🥩🍰🍜🧋🍨 .:☆ﾟ. ──────\n");
+        }
 
-    JOptionPane.showMessageDialog(frame, new JScrollPane(textArea), "Customer Record", JOptionPane.PLAIN_MESSAGE);
-}
+        JOptionPane.showMessageDialog(frame, new JScrollPane(textArea), "Customer Record", JOptionPane.PLAIN_MESSAGE);
+    }
 
     private void handlePayment(Queue<CustomerInformation> queue, String counterName) {
         if (!queue.isEmpty()) {
@@ -613,9 +584,7 @@ public class RestaurantManager {
         } else {
             JOptionPane.showMessageDialog(frame, counterName + " queue is empty.");
         }
-        processQueue(counterPanel1, queueCounter1, "Counter 1");
-        processQueue(counterPanel2, queueCounter2, "Counter 2");
-        processQueue(counterPanel3, queueCounter3, "Counter 3");
+        nextQueue(); // Refresh all counters after payment
     }
 
     private void updateCountLabel() {
@@ -623,14 +592,12 @@ public class RestaurantManager {
     }
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    try {
-                        RestaurantManager window = new RestaurantManager();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+        EventQueue.invokeLater(() -> {
+            try {
+                RestaurantManager window = new RestaurantManager();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
